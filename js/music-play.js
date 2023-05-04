@@ -1,12 +1,13 @@
 let musicArray = [
   "music/eurythmics-sweet-dreams.mp3",
+  "music/se-vos-solo.mp3",
   "music/klan-no-drama.mp3",
   "music/antwan-no-hay-pausa.mp3",
   "music/sank-nueva-piel.mp3",
   "music/sank-animality.mp3",
-  "music/sank-ahora-o-nunca"
+  "music/sank-ahora-o-nunca.mp3"
 ];
-
+// etiqueta iframe
 let onOf = true;
 
 let imgReproductor = document.querySelector(".img-reproductor");
@@ -33,6 +34,8 @@ function playing() {
   }
 }
 
+
+
 let oneTime = true;
 function music() {
   if (theMusic.paused && oneTime) {
@@ -47,9 +50,10 @@ function music() {
   }
 }
 
+
 function previousAndNext(e) {
   if (!onOf) {
-    if (e.target.alt === "next") {
+    if (e.target.classList.value === "next" || e.target.alt === "next") {
       if (musicArray[musicPosition] === musicArray[musicArray.length - 1]) {
         musicPosition = 0;
         theMusic.src = musicArray[musicPosition];
@@ -59,9 +63,9 @@ function previousAndNext(e) {
         theMusic.src = musicArray[musicPosition];
         music();
       }
-    } else if (e.target.alt === "previous") {
+    } else if (e.target.classList.value === "previous" || e.target.alt === "previous") {
       if (musicArray[musicPosition] === musicArray[0]) {
-        musicPosition = (musicArray.length - 1);
+        musicPosition = musicArray.length - 1;
         theMusic.src = musicArray[musicPosition];
         music();
       } else {
@@ -86,7 +90,20 @@ function stopMusic() {
   }
 }
 
+function authomaticReproduction() {
+  if (musicArray[musicPosition] === musicArray[musicArray.length-1]) {
+    musicPosition = 0;
+    theMusic.src = musicArray[musicPosition];
+    music();
+  } else {
+    musicPosition++;
+    theMusic.src = musicArray[musicPosition];
+    music();
+  }
+}
+
 playPause.addEventListener("click", playing);
 next.addEventListener("click", previousAndNext);
 previous.addEventListener("click", previousAndNext);
 stopM.addEventListener("click", stopMusic);
+theMusic.addEventListener("ended", authomaticReproduction);
